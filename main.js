@@ -191,11 +191,11 @@ class Effect {
     this.renderer = new THREE.WebGLRenderer({
       powerPreference: "high-performance",
       alpha: true,
-      antialias: true,
+      antialias: window.devicePixelRatio === 1, // Disable antialiasing on high-DPI screens for performance
       stencil: false,
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio to 2
     container.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
