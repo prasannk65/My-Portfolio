@@ -101,33 +101,63 @@ class Effect {
   }
 
   //MARK: -init
-  async init() {
+  init() {
     this.threeInit();
-    this.texturePromise = this.textureLoader();
+
+    // Create elements first so they exist for the render loop
     this.createElements();
     this.createMovingStars();
     this.createPointElement();
     this.initFullscreenButton();
-    // this.bannerInit(); // Removed banner logic as we have a full overlay
+    // this.bannerInit(); 
 
-    await this.texturePromise;
-    // Map textures if they loaded
-    if (this.textures.flare1) this.pointStars.material.map = this.textures.flare1;
-    if (this.textures.flare2) this.pointStars2.material.map = this.textures.flare2;
-    if (this.textures.flare3) this.pointComet1.material.map = this.textures.flare3;
-    if (this.textures.planet1) this.planet1.material.map = this.textures.planet1;
-    if (this.textures.planet2) this.planet2.material.map = this.textures.planet2;
-    if (this.textures.planet3) this.planet3.material.map = this.textures.planet3;
-    if (this.textures.star) this.nucleus.material.map = this.textures.star;
-    if (this.textures.sky) this.sphereBg.material.map = this.textures.sky;
-    if (this.textures.flare2) this.stars.material.map = this.textures.flare2;
+    // Start loading textures concurrently - do NOT block the render loop
+    this.textureLoader().then(() => {
+      // Map textures if they loaded and elements exist
+      if (this.textures.flare1 && this.pointStars) {
+        this.pointStars.material.map = this.textures.flare1;
+        this.pointStars.material.needsUpdate = true;
+      }
+      if (this.textures.flare2 && this.pointStars2) {
+        this.pointStars2.material.map = this.textures.flare2;
+        this.pointStars2.material.needsUpdate = true;
+      }
+      if (this.textures.flare3 && this.pointComet1) {
+        this.pointComet1.material.map = this.textures.flare3;
+        this.pointComet1.material.needsUpdate = true;
+      }
+      if (this.textures.planet1 && this.planet1) {
+        this.planet1.material.map = this.textures.planet1;
+        this.planet1.material.needsUpdate = true;
+      }
+      if (this.textures.planet2 && this.planet2) {
+        this.planet2.material.map = this.textures.planet2;
+        this.planet2.material.needsUpdate = true;
+      }
+      if (this.textures.planet3 && this.planet3) {
+        this.planet3.material.map = this.textures.planet3;
+        this.planet3.material.needsUpdate = true;
+      }
+      if (this.textures.star && this.nucleus) {
+        this.nucleus.material.map = this.textures.star;
+        this.nucleus.material.needsUpdate = true;
+      }
+      if (this.textures.sky && this.sphereBg) {
+        this.sphereBg.material.map = this.textures.sky;
+        this.sphereBg.material.needsUpdate = true;
+      }
+      if (this.textures.flare2 && this.stars) {
+        this.stars.material.map = this.textures.flare2;
+        this.stars.material.needsUpdate = true;
+      }
+    });
 
     // Uses ResizeObserver to handle responsive resizing
     const container = document.querySelector(".webgl");
     this.resizeObserver = new ResizeObserver(() => this.onResize());
     this.resizeObserver.observe(container);
 
-    // Limit rendering to a certain frame interval
+    // Start rendering IMMEDIATELY
     this.limitFPS(1 / 60);
   }
 
