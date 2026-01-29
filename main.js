@@ -189,13 +189,15 @@ class Effect {
     const container = document.querySelector(".webgl");
 
     this.renderer = new THREE.WebGLRenderer({
-      powerPreference: "high-performance",
+      // powerPreference: "high-performance", // Removing to ensure compatibility
       alpha: true,
-      antialias: window.devicePixelRatio === 1, // Disable antialiasing on high-DPI screens for performance
+      antialias: true,
       stencil: false,
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
-    this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2)); // Cap pixel ratio to 2
+    // Safer pixel ratio check
+    const pixelRatio = window.devicePixelRatio || 1;
+    this.renderer.setPixelRatio(pixelRatio > 2 ? 2 : pixelRatio);
     container.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
