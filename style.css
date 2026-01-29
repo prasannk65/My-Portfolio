@@ -112,21 +112,6 @@ body {
   color: var(--primary);
 }
 
-.menu-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-}
-
-.menu-toggle .bar {
-  width: 25px;
-  height: 3px;
-  background-color: var(--text-main);
-  margin: 3px 0;
-  transition: 0.4s;
-  border-radius: 2px;
-}
-
 .btn-nav {
   padding: 0.5rem 1.5rem;
   border: 1px solid var(--primary);
@@ -520,121 +505,22 @@ h3::after {
 }
 
 /* Responsive */
-/* Responsive */
 @media (max-width: 768px) {
-  .navbar {
-    padding: 1rem 1.5rem;
-  }
-
-  .menu-toggle {
-    display: flex;
-    z-index: 101;
-  }
-
-  .nav-links {
-    display: flex;
-    flex-direction: column;
-    position: fixed;
-    top: 0;
-    right: -100%;
-    width: 70%;
-    height: 100vh;
-    background: rgba(10, 25, 47, 0.95);
-    backdrop-filter: blur(10px);
-    justify-content: center;
-    align-items: center;
-    transition: right 0.3s ease-in-out;
-    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
-    gap: 2.5rem;
-    z-index: 100;
-  }
-
-  .nav-links.active {
-    right: 0;
-  }
-
-  .nav-links a {
-    font-size: 1.5rem;
-  }
-
-  /* Hamburger Animation */
-  .menu-toggle.active .bar:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-  }
-  .menu-toggle.active .bar:nth-child(2) {
-    opacity: 0;
-  }
-  .menu-toggle.active .bar:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-  }
-
-  /* Hero Adjustments */
-  .hero-main {
-    flex-direction: column-reverse; /* Image on top/middle for mobile usually looks better, or maintain order? Let's keep normal order but stacked. */
-    flex-direction: column;
-    text-align: center;
-    gap: 2rem;
-    margin-top: 4rem; /* Spacing from fixed nav */
-  }
-
   .hero-content h1 {
     font-size: 2.5rem;
   }
-  
-  .hero-content h2 {
-    font-size: 1.5rem;
+  .hero-main {
+    flex-direction: column;
+    text-align: center;
+    gap: 1.5rem;
   }
-
   .hero-content p {
-    font-size: 1rem;
-    margin: 0 auto 2rem;
+    margin: 0 auto 2.5rem; /* Center on mobile */
   }
-
   .hero-buttons {
-    justify-content: center;
-    flex-wrap: wrap;
+    justify-content: center; /* Center on mobile */
   }
-
-  .profile-container {
-    width: 180px;
-    height: 180px;
-    margin: 0 auto;
-  }
-
-  /* Section Adjustments */
-  .section {
-    padding: 4rem 1.5rem;
-  }
-
-  h3 {
-    font-size: 2rem;
-  }
-
-  .skills-grid-compact {
-    grid-template-columns: 1fr; /* Stack skills on mobile */
-  }
-
-  .project-links {
-    justify-content: center;
-  }
-
-  .contact-card {
-    padding: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-content h1 {
-    font-size: 2rem;
-  }
-  
-  .profile-container {
-    width: 150px;
-    height: 150px;
-  }
-
-  .btn-primary, .btn-secondary {
-    padding: 0.8rem 1.5rem;
-    width: 100%; /* Full width buttons on very small screens */
+  .navbar {
+    padding: 1rem;
   }
 }

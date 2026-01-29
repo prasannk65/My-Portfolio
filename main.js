@@ -108,8 +108,6 @@ class Effect {
     this.createMovingStars();
     this.createPointElement();
     this.initFullscreenButton();
-    this.initMobileMenu();
-    this.setupTouchEvents();
     // this.bannerInit(); // Removed banner logic as we have a full overlay
 
     await this.texturePromise;
@@ -148,37 +146,6 @@ class Effect {
         }
       });
     }
-  }
-
-  //MARK: -initMobileMenu
-  initMobileMenu() {
-    const menuToggle = document.getElementById('mobile-menu');
-    const navLinks = document.querySelector('.nav-links');
-
-    if (menuToggle && navLinks) {
-      menuToggle.addEventListener('click', () => {
-        menuToggle.classList.toggle('active');
-        navLinks.classList.toggle('active');
-      });
-
-      // Close menu when a link is clicked
-      navLinks.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-          menuToggle.classList.remove('active');
-          navLinks.classList.remove('active');
-        });
-      });
-    }
-  }
-
-  //MARK: -setupTouchEvents
-  setupTouchEvents() {
-    document.addEventListener('touchmove', (event) => {
-      if (event.touches.length > 0) {
-        mouseX = (event.touches[0].clientX - windowHalfX);
-        mouseY = (event.touches[0].clientY - windowHalfY);
-      }
-    }, { passive: true });
   }
 
   //MARK: -threeInit
