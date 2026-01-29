@@ -282,9 +282,10 @@ class Effect {
   // Builds the main nucleus and background spheres
   createElements() {
     /* Nucleus  */
-    //MARK: ---Nucleus
-    // Increasing the second parameter drastically reduces FPS, so use carefully
-    let icosahedronGeometry = new THREE.IcosahedronGeometry(20, 28);
+    // Reduced detail level from 28 to 4 to prevent crashing mobile GPUs
+    // Level 28 created millions of vertices, which consumes gigabytes of VRAM.
+    // Level 4 is sufficient for the blob effect on all devices.
+    let icosahedronGeometry = new THREE.IcosahedronGeometry(20, 4);
 
     // Convert geometry to store original positions for animating
     this.originalPositions = new Float32Array(
