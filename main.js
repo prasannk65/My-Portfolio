@@ -97,9 +97,7 @@ class Effect {
     this.velocitiesStar = null;
     this.startPositions = null;
     this.delta = 0;
-    this.delta = 0;
     this.textures = {};
-    this.baseCameraZ = 150;
   }
 
   //MARK: -init
@@ -189,15 +187,13 @@ class Effect {
     const container = document.querySelector(".webgl");
 
     this.renderer = new THREE.WebGLRenderer({
-      // powerPreference: "high-performance", // Removing to ensure compatibility
+      powerPreference: "high-performance",
       alpha: true,
       antialias: true,
       stencil: false,
     });
     this.renderer.setSize(container.clientWidth, container.clientHeight);
-    // Safer pixel ratio check
-    const pixelRatio = window.devicePixelRatio || 1;
-    this.renderer.setPixelRatio(pixelRatio > 2 ? 2 : pixelRatio);
+    this.renderer.setPixelRatio(window.devicePixelRatio);
     container.appendChild(this.renderer.domElement);
 
     this.scene = new THREE.Scene();
@@ -209,9 +205,6 @@ class Effect {
       1000
     );
     this.camera.position.set(0, 0, 150);
-
-    // Initial sizing
-    this.onResize();
 
     this.clock = new THREE.Clock();
 
@@ -282,10 +275,9 @@ class Effect {
   // Builds the main nucleus and background spheres
   createElements() {
     /* Nucleus  */
-    // Reduced detail level from 28 to 4 to prevent crashing mobile GPUs
-    // Level 28 created millions of vertices, which consumes gigabytes of VRAM.
-    // Level 4 is sufficient for the blob effect on all devices.
-    let icosahedronGeometry = new THREE.IcosahedronGeometry(20, 4);
+    //MARK: ---Nucleus
+    // Increasing the second parameter drastically reduces FPS, so use carefully
+    let icosahedronGeometry = new THREE.IcosahedronGeometry(20, 28);
 
     // Convert geometry to store original positions for animating
     this.originalPositions = new Float32Array(
@@ -499,13 +491,6 @@ class Effect {
     this.camera.aspect = window.innerWidth / window.innerHeight;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-    // Adjust camera distance for mobile responsiveness
-    if (window.innerWidth < 768) {
-      this.baseCameraZ = 250;
-    } else {
-      this.baseCameraZ = 150;
-    }
   }
 
   //MARK: -limitFPS
@@ -676,8 +661,8 @@ class Effect {
     }
 
     if (this.camera) {
-      // Move camera slightly as user scrolls based on the dynamic base Z
-      this.camera.position.z = this.baseCameraZ - (scrollY * 0.02);
+      // Move camera slightly as user scrolls
+      this.camera.position.z = 150 - (scrollY * 0.02);
     }
 
     this.nucleusPosition = this.nucleus.geometry.attributes.position;
